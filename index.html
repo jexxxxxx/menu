@@ -16,7 +16,7 @@
       margin-bottom: 10px;
     }
     .chef-cat {
-      height: 80px;
+      height: 100px;
     }
     h1 {
       text-align: center;
@@ -76,7 +76,8 @@
   <header>
     <img class="chef-cat" src="images/chef-cat.jpg" alt="Chef Cat" />
   </header>
-  <h1>Alana's Secret Menu</h1>
+  $1
+  <p style="text-align:center; font-size: 1.1em; color: #888;" id="current-date"></p>
 
   <table>
     <thead>
@@ -182,12 +183,17 @@
     }
 
     window.onload = () => {
+      // Display today's date
+      const today = new Date();
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById("current-date").textContent = `Menu set on: ${today.toLocaleDateString(undefined, options)}`;
       const params = new URLSearchParams(window.location.search);
       populateTableFromParams(params);
     };
   </script>
 </body>
 </html>
+
 
 
 
