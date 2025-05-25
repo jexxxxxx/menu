@@ -71,8 +71,9 @@
     <thead>
       <tr>
         <th>Day</th>
-        <th>Breakfast</th>
         <th>Dinner</th>
+        <th>Dinner 2</th>
+        <th>Dinner 3</th>
       </tr>
     </thead>
     <tbody id="meal-table"></tbody>
@@ -94,10 +95,12 @@
     ];
 
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const mealTypes = ["Dinner", "Dinner 2", "Dinner 3"];
     const tableBody = document.getElementById("meal-table");
 
     function createDropdown(day, mealType, selectedValue = "") {
       const select = document.createElement("select");
+      select.name = `${day}-${mealType}`;
 
       const defaultOption = document.createElement("option");
       defaultOption.value = "";
@@ -129,15 +132,12 @@
         dayCell.textContent = day;
         row.appendChild(dayCell);
 
-        const breakfastValue = params.get(`${day}-Breakfast`) || localStorage.getItem(`${day}-Breakfast`) || "";
-        const breakfastCell = document.createElement("td");
-        breakfastCell.appendChild(createDropdown(day, "Breakfast", breakfastValue));
-        row.appendChild(breakfastCell);
-
-        const dinnerValue = params.get(`${day}-Dinner`) || localStorage.getItem(`${day}-Dinner`) || "";
-        const dinnerCell = document.createElement("td");
-        dinnerCell.appendChild(createDropdown(day, "Dinner", dinnerValue));
-        row.appendChild(dinnerCell);
+        mealTypes.forEach(mealType => {
+          const selectedValue = params.get(`${day}-${mealType}`) || localStorage.getItem(`${day}-${mealType}`) || "";
+          const cell = document.createElement("td");
+          cell.appendChild(createDropdown(day, mealType, selectedValue));
+          row.appendChild(cell);
+        });
 
         tableBody.appendChild(row);
       });
@@ -146,10 +146,13 @@
     function sharePlan() {
       const url = new URL(window.location.href);
       days.forEach(day => {
-        const breakfast = document.querySelector(`select[name='${day}-Breakfast']`)?.value || "";
-        const dinner = document.querySelector(`select[name='${day}-Dinner']`)?.value || "";
-        if (breakfast) url.searchParams.set(`${day}-Breakfast`, breakfast);
-        if (dinner) url.searchParams.set(`${day}-Dinner`, dinner);
+        mealTypes.forEach(mealType => {
+          const select = document.querySelector(`select[name='${day}-${mealType}']`);
+          const value = select?.value || "";
+          if (value) {
+            url.searchParams.set(`${day}-${mealType}`, value);
+          }
+        });
       });
       navigator.clipboard.writeText(url.href).then(() => {
         alert("Link copied! You can send it to your boo 💌");
@@ -163,6 +166,7 @@
   </script>
 </body>
 </html>
+
 
 
 
