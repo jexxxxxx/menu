@@ -6,53 +6,62 @@
   <title>Weekly Meal Planner</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
       padding: 20px;
-      background: #f9f9f9;
+      background: #fff0f6;
+      color: #333;
     }
     h1 {
       text-align: center;
+      color: #d6336c;
+      font-size: 2.5em;
     }
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
     th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
+      border: 1px solid #ffd6e7;
+      padding: 12px;
       text-align: center;
+    }
+    th {
+      background-color: #ffebf1;
+      color: #d6336c;
+      font-size: 1.2em;
     }
     select {
       width: 100%;
-      padding: 5px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ffb3c6;
+      background-color: #fff0f6;
+      font-size: 1em;
     }
-    .summary {
-      margin-top: 30px;
-      background: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    select:focus {
+      outline: none;
+      border-color: #ff4d6d;
+      box-shadow: 0 0 5px #ff4d6d;
     }
   </style>
 </head>
 <body>
-  <h1>Weekly Meal Planner</h1>
+  <h1>💖 Weekly Meal Planner 💖</h1>
   <table>
     <thead>
       <tr>
         <th>Day</th>
-        <th>Lunch</th>
+        <th>Breakfast</th>
         <th>Dinner</th>
       </tr>
     </thead>
     <tbody id="meal-table"></tbody>
   </table>
-
-  <div class="summary">
-    <h2>Your Selections</h2>
-    <pre id="summary"></pre>
-  </div>
 
   <script>
     const meals = [
@@ -86,21 +95,9 @@
 
       select.addEventListener("change", () => {
         localStorage.setItem(`${day}-${mealType}`, select.value);
-        updateSummary();
       });
 
       return select;
-    }
-
-    function updateSummary() {
-      const summary = {};
-      days.forEach(day => {
-        summary[day] = {
-          Lunch: localStorage.getItem(`${day}-Lunch`) || "-",
-          Dinner: localStorage.getItem(`${day}-Dinner`) || "-"
-        };
-      });
-      document.getElementById("summary").textContent = JSON.stringify(summary, null, 2);
     }
 
     days.forEach(day => {
@@ -110,9 +107,9 @@
       dayCell.textContent = day;
       row.appendChild(dayCell);
 
-      const lunchCell = document.createElement("td");
-      lunchCell.appendChild(createDropdown(day, "Lunch"));
-      row.appendChild(lunchCell);
+      const breakfastCell = document.createElement("td");
+      breakfastCell.appendChild(createDropdown(day, "Breakfast"));
+      row.appendChild(breakfastCell);
 
       const dinnerCell = document.createElement("td");
       dinnerCell.appendChild(createDropdown(day, "Dinner"));
@@ -120,8 +117,7 @@
 
       tableBody.appendChild(row);
     });
-
-    updateSummary();
   </script>
 </body>
 </html>
+
