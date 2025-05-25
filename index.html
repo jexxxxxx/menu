@@ -6,7 +6,7 @@
   <title>Alana's Secret Menu</title>
   <style>
     body {
-      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-family: Calibri, sans-serif;
       padding: 20px;
       background: #fff0f6;
       color: #333;
@@ -93,11 +93,12 @@
 
   <script>
     const meals = [
+      "Egg Pancake – 鸡蛋饼",
       "Century Egg & Pork Congee – 皮蛋瘦肉粥",
       "Orange Chicken – 橙汁鸡",
-      "Broccoli Beef – 西兰花炒牛肉",
-      "Kung Pao Chicken – 宫保鸡丁",
-      "Stir-Fried Beef Ho Fun (Chow Fun) – 干炒牛河",
+      "Broccoli Beef – 西蘭花炒牛肉",
+      "Kung Pao Chicken – 宮保鸡丁",
+      "Stir-Fried Beef Ho Fun (Chow Fun) – 干炒牛沿",
       "Braised Pork Rice (Lu Rou Fan) – 卤肉饭",
       "Red-Braised Pork (Hong Shao Rou) – 红烧肉",
       "Stir-Fried Tomato and Egg – 番茄炒蛋",
@@ -107,12 +108,12 @@
       "Hot and Sour Soup – 酸辣汤",
       "Tomato Beef & Egg Rice – 番茄牛肉鸡蛋饭",
       "Yangzhou Fried Rice – 扬州炒饭",
-      "Hash Browns – 薯饼",
-      "Steamed Codfish – 清蒸鳕鱼",
+      "Hash Browns – 薩饼",
+      "Steamed Codfish – 清蒸鳗鱼",
       "Soy Sauce Chicken Drumsticks – 酱油鸡腿",
       "Three Cup Chicken – 三杯鸡",
       "Seafood Congee – 海鲜粥",
-      "Curry Chicken – 咖喱鸡"
+      "Curry Chicken – 咖哩鸡"
     ];
 
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -125,7 +126,7 @@
 
       const defaultOption = document.createElement("option");
       defaultOption.value = "";
-      defaultOption.textContent = "爱我就喂我";
+      defaultOption.textContent = "今天吃点啥";
       defaultOption.disabled = true;
       defaultOption.selected = !selectedValue;
       select.appendChild(defaultOption);
@@ -187,6 +188,7 @@
   </script>
 </body>
 </html>
+
 
 
 
