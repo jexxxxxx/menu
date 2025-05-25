@@ -83,6 +83,14 @@
 
     function createDropdown(day, mealType) {
       const select = document.createElement("select");
+
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.textContent = "爱我就喂我";
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      select.appendChild(defaultOption);
+
       meals.forEach(meal => {
         const option = document.createElement("option");
         option.value = meal;
@@ -120,4 +128,5 @@
   </script>
 </body>
 </html>
+
 
