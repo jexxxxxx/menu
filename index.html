@@ -48,6 +48,21 @@
       border-color: #ff4d6d;
       box-shadow: 0 0 5px #ff4d6d;
     }
+    .share-button {
+      display: block;
+      margin: 30px auto;
+      background: #ff69b4;
+      color: white;
+      padding: 12px 24px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .share-button:hover {
+      background: #ff85c1;
+    }
   </style>
 </head>
 <body>
@@ -62,6 +77,7 @@
     </thead>
     <tbody id="meal-table"></tbody>
   </table>
+  <button class="share-button" onclick="sharePlan()">📤 Share My Plan</button>
 
   <script>
     const meals = [
@@ -78,28 +94,25 @@
     ];
 
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
     const tableBody = document.getElementById("meal-table");
 
-    function createDropdown(day, mealType) {
+    function createDropdown(day, mealType, selectedValue = "") {
       const select = document.createElement("select");
 
       const defaultOption = document.createElement("option");
       defaultOption.value = "";
       defaultOption.textContent = "爱我就喂我";
       defaultOption.disabled = true;
-      defaultOption.selected = true;
+      defaultOption.selected = !selectedValue;
       select.appendChild(defaultOption);
 
       meals.forEach(meal => {
         const option = document.createElement("option");
         option.value = meal;
         option.textContent = meal;
+        if (meal === selectedValue) option.selected = true;
         select.appendChild(option);
       });
-
-      const saved = localStorage.getItem(`${day}-${mealType}`);
-      if (saved) select.value = saved;
 
       select.addEventListener("change", () => {
         localStorage.setItem(`${day}-${mealType}`, select.value);
@@ -108,25 +121,48 @@
       return select;
     }
 
-    days.forEach(day => {
-      const row = document.createElement("tr");
+    function populateTableFromParams(params) {
+      days.forEach(day => {
+        const row = document.createElement("tr");
 
-      const dayCell = document.createElement("td");
-      dayCell.textContent = day;
-      row.appendChild(dayCell);
+        const dayCell = document.createElement("td");
+        dayCell.textContent = day;
+        row.appendChild(dayCell);
 
-      const breakfastCell = document.createElement("td");
-      breakfastCell.appendChild(createDropdown(day, "Breakfast"));
-      row.appendChild(breakfastCell);
+        const breakfastValue = params.get(`${day}-Breakfast`) || localStorage.getItem(`${day}-Breakfast`) || "";
+        const breakfastCell = document.createElement("td");
+        breakfastCell.appendChild(createDropdown(day, "Breakfast", breakfastValue));
+        row.appendChild(breakfastCell);
 
-      const dinnerCell = document.createElement("td");
-      dinnerCell.appendChild(createDropdown(day, "Dinner"));
-      row.appendChild(dinnerCell);
+        const dinnerValue = params.get(`${day}-Dinner`) || localStorage.getItem(`${day}-Dinner`) || "";
+        const dinnerCell = document.createElement("td");
+        dinnerCell.appendChild(createDropdown(day, "Dinner", dinnerValue));
+        row.appendChild(dinnerCell);
 
-      tableBody.appendChild(row);
-    });
+        tableBody.appendChild(row);
+      });
+    }
+
+    function sharePlan() {
+      const url = new URL(window.location.href);
+      days.forEach(day => {
+        const breakfast = document.querySelector(`select[name='${day}-Breakfast']`)?.value || "";
+        const dinner = document.querySelector(`select[name='${day}-Dinner']`)?.value || "";
+        if (breakfast) url.searchParams.set(`${day}-Breakfast`, breakfast);
+        if (dinner) url.searchParams.set(`${day}-Dinner`, dinner);
+      });
+      navigator.clipboard.writeText(url.href).then(() => {
+        alert("Link copied! You can send it to your boo 💌");
+      });
+    }
+
+    window.onload = () => {
+      const params = new URLSearchParams(window.location.search);
+      populateTableFromParams(params);
+    };
   </script>
 </body>
 </html>
+
 
 
